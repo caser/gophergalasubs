@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/google/go-github/github"
 	"golang.org/x/oauth2"
@@ -30,8 +31,14 @@ Logged in with <a href="/login">GitHub</a>
 </body></html>
 `
 
-// /
+var should = true
+
 func handleMain(w http.ResponseWriter, r *http.Request) {
+	cookie, err := r.Cookie("token")
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	fmt.Printf("stored cookie: %#v", cookie)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(htmlIndex))
@@ -68,7 +75,13 @@ func handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
+
 	fmt.Printf("Logged in as GitHub user: %s\n", *user.Login)
+
+	expiration := time.Now().Add(365 * 24 * time.Hour)
+	cookie := http.Cookie{Name: "token", Value: token.AccessToken, Expires: expiration}
+	http.SetCookie(w, &cookie)
+
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }
 
