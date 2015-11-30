@@ -1,9 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
+
+	_ "github.com/lib/pq"
 
 	"golang.org/x/oauth2"
 	githuboauth "golang.org/x/oauth2/github"
@@ -25,6 +29,13 @@ var (
 )
 
 func main() {
+	db, err := sql.Open("postgres", "postgres://postgres:postgres@postgres/gophergalasubs")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	log.Printf("%#v", db)
+
 	http.HandleFunc("/", handleMain)
 	http.HandleFunc("/login", handleGitHubLogin)
 	http.HandleFunc("/leaderboard", handleLeaderboard)
