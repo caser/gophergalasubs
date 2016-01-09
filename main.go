@@ -29,7 +29,7 @@ var (
 )
 
 func main() {
-	db, err := sql.Open("postgres", "postgres://postgres:postgres@postgres/gophergalasubs")
+	  db, err := sql.Open("postgres", "postgres://postgres:postgres@postgres/gophergalasubs")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
