@@ -88,7 +88,11 @@ func handleDashboard(w http.ResponseWriter, r *http.Request) {
 		client := github.NewClient(tc)
 
 		// list all repositories for the authenticated user
-		repos, _, err = client.Repositories.List("", nil)
+		opt := &github.RepositoryListByOrgOptions{
+			Type:        "public",
+			ListOptions: github.ListOptions{PerPage: 20, Page: 1},
+		}
+		repos, _, err = client.Repositories.ListByOrg("gophergala", opt)
 		if err != nil {
 			http.Error(w, err.Error(), 500)
 			return
