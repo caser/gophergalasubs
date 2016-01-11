@@ -2,8 +2,6 @@ postgres:
   build: ./build/postgres/
   ports:
     - "5432:5432"
-  volumes:
-    - /var/lib/docker/speak_data/postgres:/var/lib/postgresql
 
 gophergalasubs:
   build: .

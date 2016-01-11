@@ -1,9 +1,11 @@
 #!/bin/bash
 echo "******CREATING DOCKER DATABASE******"
-gosu postgres postgres --single <<- EOSQL
+psql --username postgres  <<- EOSQL
   CREATE DATABASE development;
-  CREATE DATABASE test;
   GRANT ALL PRIVILEGES ON DATABASE development to postgres;
-  GRANT ALL PRIVILEGES ON DATABASE test to postgres;
+EOSQL
+psql --username postgres development <<- EOSQL
+  CREATE TABLE users (id INT PRIMARY KEY NOT NULL, github_id INT, github_user_name TEXT, email TEXT);
+  CREATE TABLE votes (id INT PRIMARY KEY NOT NULL, user_id INT, repo_id INT, weight INT);
 EOSQL
 echo "******DOCKER DATABASE CREATED******"
