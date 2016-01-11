@@ -25,3 +25,5 @@ _testmain.go
 
 .env
 .DS_Store
+frontend/build/
+frontend/node_modules/
