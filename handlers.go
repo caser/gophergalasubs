@@ -11,24 +11,7 @@ import (
 )
 
 func handleMain(w http.ResponseWriter, r *http.Request) {
-	//just some test code
-	_, err := r.Cookie("token")
-	if err == nil {
-		http.Redirect(w, r, "/dashboard", http.StatusTemporaryRedirect)
-		return
-	}
-
-	t := template.New("index.html")
-	t, err = t.ParseFiles("./static/html/index.html")
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-	err = t.Execute(w, nil)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
+	http.ServeFile(w, r, "./frontend/index.html")
 }
 
 // /login

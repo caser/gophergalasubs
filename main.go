@@ -36,11 +36,11 @@ func main() {
 
 	log.Printf("%#v", db)
 
-	http.HandleFunc("/", handleMain)
-	http.HandleFunc("/login", handleGitHubLogin)
-	http.HandleFunc("/leaderboard", handleLeaderboard)
-	http.HandleFunc("/github_oauth_cb", handleGitHubCallback)
-	http.HandleFunc("/dashboard", handleDashboard)
+	http.Handle("/", http.FileServer(http.Dir("./frontend")))
+	// http.HandleFunc("/login", handleGitHubLogin)
+	// http.HandleFunc("/leaderboard", handleLeaderboard)
+	// http.HandleFunc("/github_oauth_cb", handleGitHubCallback)
+	// http.HandleFunc("/dashboard", handleDashboard)
 	fmt.Print("Started running on http://127.0.0.1:8080\n")
 	fmt.Println(http.ListenAndServe(":8080", nil))
 }
