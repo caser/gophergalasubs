@@ -9,6 +9,7 @@ import (
 
 	_ "github.com/lib/pq"
 
+	_ "github.com/wader/disable_sendfile_vbox_linux"
 	"golang.org/x/oauth2"
 	githuboauth "golang.org/x/oauth2/github"
 )
@@ -24,7 +25,7 @@ var (
 		Scopes:   []string{"user:email", "repo"},
 		Endpoint: githuboauth.Endpoint,
 	}
-	// random string for oauth2 API calls to protect against CSRF
+	// TODO: random string for oauth2 API calls to protect against CSRF
 	oauthStateString = "thisshouldberandomx"
 )
 
@@ -33,14 +34,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-
-	log.Printf("%#v", db)
-
+	http.HandleFunc("/login", handleGitHubLogin)
+	http.HandleFunc("/github_oauth_cb", handleGitHubCallback)
 	http.Handle("/", http.FileServer(http.Dir("./frontend")))
-	// http.HandleFunc("/login", handleGitHubLogin)
-	// http.HandleFunc("/leaderboard", handleLeaderboard)
-	// http.HandleFunc("/github_oauth_cb", handleGitHubCallback)
-	// http.HandleFunc("/dashboard", handleDashboard)
-	fmt.Print("Started running on http://127.0.0.1:8080\n")
+	fmt.Println("Started running on http://127.0.0.1:8080")
 	fmt.Println(http.ListenAndServe(":8080", nil))
 }

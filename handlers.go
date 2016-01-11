@@ -94,17 +94,3 @@ func handleDashboard(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
-
-func handleLeaderboard(w http.ResponseWriter, r *http.Request) {
-	t := template.New("leaderboard.html")
-	t, err := t.ParseFiles("./static/html/leaderboard.html")
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-	err = t.Execute(w, nil)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
-	}
-}

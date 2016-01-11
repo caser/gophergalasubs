@@ -12,4 +12,6 @@ gophergalasubs:
     - ./frontend:/go/src/github.com/awsmsrc/gophergalasubs/frontend
   links:
     - postgres
+  cap_add:
+    - SYS_ADMIN
 
