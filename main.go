@@ -1,9 +1,7 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
@@ -30,13 +28,17 @@ var (
 )
 
 func main() {
-	db, err := sql.Open("postgres", "postgres://postgres:postgres@postgres/development")
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	// db, err := sql.Open("postgres", "postgres://postgres:postgres@postgres/development")
+	// if err != nil {
+	// 	log.Fatal(err.Error())
+	// }
+	http.Handle("/", http.FileServer(http.Dir("./frontend")))
+
 	http.HandleFunc("/login", handleGitHubLogin)
 	http.HandleFunc("/github_oauth_cb", handleGitHubCallback)
-	http.Handle("/", http.FileServer(http.Dir("./frontend")))
+	http.HandleFunc("/repos", handleRepos)
+	http.HandleFunc("/user", handleUser)
+
 	fmt.Println("Started running on http://127.0.0.1:8080")
 	fmt.Println(http.ListenAndServe(":8080", nil))
 }

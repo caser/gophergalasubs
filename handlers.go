@@ -1,9 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"text/template"
 	"time"
 
 	"github.com/google/go-github/github"
@@ -55,16 +55,14 @@ func handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }
 
-func handleDashboard(w http.ResponseWriter, r *http.Request) {
-	var repos []github.Repository
-	var err error
-
-	cookie, err := r.Cookie("token")
-	if err != nil {
+func handleRepos(w http.ResponseWriter, r *http.Request) {
+	token := r.URL.Query().Get("token")
+	if len(token) == 0 {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 	} else {
+		var allRepos []github.Repository
 		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: cookie.Value},
+			&oauth2.Token{AccessToken: token},
 		)
 		tc := oauth2.NewClient(oauth2.NoContext, ts)
 
@@ -73,24 +71,57 @@ func handleDashboard(w http.ResponseWriter, r *http.Request) {
 		// list all repositories for the authenticated user
 		opt := &github.RepositoryListByOrgOptions{
 			Type:        "public",
-			ListOptions: github.ListOptions{PerPage: 20, Page: 1},
+			ListOptions: github.ListOptions{PerPage: 50, Page: 1},
 		}
-		repos, _, err = client.Repositories.ListByOrg("gophergala", opt)
+
+		// get all pages of results
+		for {
+			repos, resp, err := client.Repositories.ListByOrg("github", opt)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+			allRepos = append(allRepos, repos...)
+			if resp.NextPage == 0 {
+				break
+			}
+			opt.ListOptions.Page = resp.NextPage
+		}
+
+		js, err := json.Marshal(allRepos)
 		if err != nil {
-			http.Error(w, err.Error(), 500)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-	}
 
-	t := template.New("dashboard.html")
-	t, err = t.ParseFiles("./static/html/dashboard.html")
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
 	}
-	err = t.Execute(w, repos)
-	if err != nil {
-		http.Error(w, err.Error(), 500)
-		return
+}
+
+func handleUser(w http.ResponseWriter, r *http.Request) {
+	token := r.URL.Query().Get("token")
+	if len(token) == 0 {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	} else {
+		ts := oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: token},
+		)
+		tc := oauth2.NewClient(oauth2.NoContext, ts)
+
+		client := github.NewClient(tc)
+
+		user, _, err := client.Users.Get("")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+
+		js, err := json.Marshal(user)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
 	}
 }

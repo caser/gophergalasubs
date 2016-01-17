@@ -4,8 +4,8 @@ var Dashboard = require('./Dashboard.jsx');
 var App = React.createClass({
   render: function() {
     var body;
-    if(this.props.state.token) {
-      body = <Dashboard />;
+    if(this.props.state.loggedIn) {
+      body = <Dashboard state={this.props.state}/>;
     } else {
       body = <Login />;
     }
@@ -15,7 +15,6 @@ var App = React.createClass({
       {body}
       </div>
     );
-    console.log(this.props.state)
   }
 });
 
