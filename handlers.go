@@ -103,14 +103,7 @@ func handleUser(w http.ResponseWriter, r *http.Request) {
 	if len(token) == 0 {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 	} else {
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: token},
-		)
-		tc := oauth2.NewClient(oauth2.NoContext, ts)
-
-		client := github.NewClient(tc)
-
-		user, _, err := client.Users.Get("")
+		user, err := authenticateUser(token)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
@@ -124,4 +117,24 @@ func handleUser(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(js)
 	}
+}
+
+func authenticateUser(token string) (*github.User, error) {
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: token},
+	)
+	tc := oauth2.NewClient(oauth2.NoContext, ts)
+
+	client := github.NewClient(tc)
+
+	user, _, err := client.Users.Get("")
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = UpsertUserFromGithubUser(user)
+	if err != nil {
+		return nil, err
+	}
+	return user, nil
 }

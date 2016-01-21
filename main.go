@@ -1,7 +1,9 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -25,19 +27,22 @@ var (
 	}
 	// TODO: random string for oauth2 API calls to protect against CSRF
 	oauthStateString = "thisshouldberandomx"
+	db               *sql.DB
 )
 
 func main() {
-	// db, err := sql.Open("postgres", "postgres://postgres:postgres@postgres/development")
-	// if err != nil {
-	// 	log.Fatal(err.Error())
-	// }
+	var err error
+	db, err = sql.Open("postgres", "postgres://postgres:postgres@postgres/development?sslmode=disable")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 	http.Handle("/", http.FileServer(http.Dir("./frontend")))
 
 	http.HandleFunc("/login", handleGitHubLogin)
 	http.HandleFunc("/github_oauth_cb", handleGitHubCallback)
 	http.HandleFunc("/repos", handleRepos)
 	http.HandleFunc("/user", handleUser)
+	http.HandleFunc("/vote", handleUser)
 
 	fmt.Println("Started running on http://127.0.0.1:8080")
 	fmt.Println(http.ListenAndServe(":8080", nil))
