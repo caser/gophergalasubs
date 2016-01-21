@@ -8,7 +8,8 @@ var RepoItem = React.createClass({
             <p>
             {this.props.repo.description}
             </p>
-            {this.props.repo.stargazers_count}
+            {this.props.repo.stargazers_count} 
+            <span className="glyphicon glyphicon-star" aria-hidden="true"></span>
             <button onClick={this.props.vote}>Vote</button>
             </li>)
   }

@@ -27,18 +27,33 @@ var Dashboard = React.createClass({
         <div className="row">
           <div className="col-md-8">
             <h2>Submissions</h2>
-            <ul>
+            <ul id="submissions">
               {repos}
             </ul>
           </div>
           <div className="col-md-4">
             <h2>Your top 5</h2>
-            <ol>
-              <li>item</li>
-              <li>item</li>
-              <li>item</li>
-              <li>item</li>
-              <li>item</li>
+            <ol id="top5">
+              <li>
+                item
+                <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </li>
+              <li>
+                item
+                <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </li>
+              <li>
+                item
+                <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </li>
+              <li>
+                item
+                <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </li>
+              <li>
+                item
+                <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+              </li>
             </ol>
           </div>
         </div>

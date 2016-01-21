@@ -6,6 +6,7 @@ RUN go get github.com/google/go-github/github
 RUN go get golang.org/x/oauth2
 RUN go get github.com/lib/pq
 RUN go get github.com/wader/disable_sendfile_vbox_linux
+RUN go get github.com/gorilla/mux
 
 # Copy the local package files to the container's workspace.
 ADD . /go/src/github.com/awsmsrc/gophergalasubs

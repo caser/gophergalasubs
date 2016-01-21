@@ -24,7 +24,7 @@ var Actions = {
   },
 
   submitVote: function(dispatch, id) {
-    return fetch('/vote?token='+Util.getCookie('token'), {
+    return fetch('/vote/' + id + '?token='+Util.getCookie('token'), {
       method: 'post',
       headers: {
         'Accept': 'application/json',

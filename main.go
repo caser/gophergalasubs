@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
 
 	_ "github.com/wader/disable_sendfile_vbox_linux"
@@ -36,13 +37,15 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	http.Handle("/", http.FileServer(http.Dir("./frontend")))
 
-	http.HandleFunc("/login", handleGitHubLogin)
-	http.HandleFunc("/github_oauth_cb", handleGitHubCallback)
-	http.HandleFunc("/repos", handleRepos)
-	http.HandleFunc("/user", handleUser)
-	http.HandleFunc("/vote", handleUser)
+	r := mux.NewRouter()
+	r.HandleFunc("/login", handleGitHubLogin)
+	r.HandleFunc("/github_oauth_cb", handleGitHubCallback)
+	r.HandleFunc("/repos", handleRepos)
+	r.HandleFunc("/user", handleUser)
+	r.HandleFunc("/vote/{vote_id}", handleVote)
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend")))
+	http.Handle("/", r)
 
 	fmt.Println("Started running on http://127.0.0.1:8080")
 	fmt.Println(http.ListenAndServe(":8080", nil))
