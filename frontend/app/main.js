@@ -3,6 +3,7 @@ require('isomorphic-fetch');
 
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ReactRedux = require('react-redux');
 var Redux = require('redux');
 
 var ReduxThunk = require('redux-thunk');
@@ -13,21 +14,12 @@ var Actions = require('./actions.js');
 window.React = React; 
 
 var reducer = function(state, action){
-  console.log(action)
   switch (action.type) {
     case "repos_fetched":
       return Object.assign({}, state, {
         repos: action.repos
       })
     case "user_fetched":
-      return Object.assign({}, state, {
-        user: action.user
-      })
-    case "repo_voted":
-      return Object.assign({}, state, {
-        user: action.user
-      })
-    case "repo_vote_weighted":
       return Object.assign({}, state, {
         user: action.user
       })
@@ -55,7 +47,12 @@ if(store.getState().loggedIn){
 var App = require('./components/App.jsx');
 
 var render = function(){
-  ReactDOM.render(<App state={store.getState()}/>, document.getElementById('app'));
+  ReactDOM.render(
+    <ReactRedux.Provider store={store}>
+      <App state={store.getState()}/>
+    </ReactRedux.Provider>,
+    document.getElementById('app')
+  );
 }
 
 store.subscribe(render);
