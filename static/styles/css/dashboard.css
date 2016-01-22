@@ -1,0 +1,18 @@
+body {
+  background: #eee;
+}
+
+#submissions {
+  padding: 0;
+}
+
+#top5 li,
+#submissions li {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+#submissions li {
+  list-style: none;
+}
