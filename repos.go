@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"sync"
 	"time"
 
@@ -8,9 +9,18 @@ import (
 	"golang.org/x/oauth2"
 )
 
-var allRepos []github.Repository
+var allRepos []Repo
 var mut = new(sync.RWMutex)
 var lastCached = time.Now().Add(-40 * time.Minute)
+
+type Repo struct {
+	ID              *int    `json:"id"`
+	Name            *string `json:"name"`
+	FullName        *string `json:"full_name"`
+	HTMLURL         *string `json:"html_url"`
+	StargazersCount *int    `json:"stargazers_count"`
+	Description     *string `json:"description"`
+}
 
 func RepoCacheIsInDate() bool {
 	cacheLife := time.Duration(20 * time.Minute)
@@ -18,9 +28,10 @@ func RepoCacheIsInDate() bool {
 	return delta > cacheLife
 }
 
-func GetRepos() ([]github.Repository, error) {
+func GetRepos() ([]Repo, error) {
 	mut.RLock()
 	if len(allRepos) > 0 && RepoCacheIsInDate() {
+		log.Print("Usign cache")
 		res := allRepos
 		mut.RUnlock()
 		return res, nil
@@ -34,6 +45,8 @@ func GetRepos() ([]github.Repository, error) {
 
 	client := github.NewClient(tc)
 
+	githubRepos := make([]github.Repository, 0)
+
 	// list all repositories for the authenticated user
 	opt := &github.RepositoryListByOrgOptions{
 		Type:        "public",
@@ -44,14 +57,26 @@ func GetRepos() ([]github.Repository, error) {
 	for {
 		repos, resp, err := client.Repositories.ListByOrg("gophergala", opt)
 		if err != nil {
-			allRepos = make([]github.Repository, 0)
+			allRepos = make([]Repo, 0)
 			return allRepos, err
 		}
-		allRepos = append(allRepos, repos...)
+		githubRepos = append(githubRepos, repos...)
 		if resp.NextPage == 0 {
 			break
 		}
 		opt.ListOptions.Page = resp.NextPage
+	}
+
+	for _, githubRepo := range githubRepos {
+		allRepos = append(allRepos, Repo{
+			ID:              githubRepo.ID,
+			Name:            githubRepo.Name,
+			FullName:        githubRepo.FullName,
+			HTMLURL:         githubRepo.HTMLURL,
+			StargazersCount: githubRepo.StargazersCount,
+			Description:     githubRepo.Description,
+		})
+
 	}
 	return allRepos, nil
 }
