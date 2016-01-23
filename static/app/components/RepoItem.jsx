@@ -1,5 +1,3 @@
-var Actions = require('./Login.jsx');
-
 var RepoItem = React.createClass({
 
   render: function(){

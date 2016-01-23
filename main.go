@@ -19,7 +19,7 @@ var (
 	oauthConf = &oauth2.Config{
 		ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
 		ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-		Scopes:       []string{"user:email", "repo"},
+		Scopes:       []string{"user:email", "public_repo"},
 		Endpoint:     githuboauth.Endpoint,
 	}
 	// TODO: random string for oauth2 API calls to protect against CSRF

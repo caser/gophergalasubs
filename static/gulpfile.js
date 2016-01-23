@@ -34,7 +34,8 @@ gulp.task('browserify', function() {
 
 // I added this so that you see how to run two watch tasks
 gulp.task('css', function () {
-  gulp.watch('styles/**/*.css', function () {
+  gulp.watch('./styles/**/*.css', function () {
+    console.log("Copying styles")
     return gulp.src('styles/**/*.css')
     .pipe(concat('main.css'))
     .pipe(gulp.dest('build/'));
@@ -43,8 +44,9 @@ gulp.task('css', function () {
 
 // I added this so that you see how to run two watch tasks
 gulp.task('images', function () {
-  gulp.watch('images/*.*', function () {
-    return gulp.src('images/*.*')
+  gulp.watch('./images/**/*', function () {
+    console.log("Copying images")
+    return gulp.src('./images/**/*')
     .pipe(gulp.dest('build/images/'));
   });
 });
