@@ -91,22 +91,32 @@ func (u *User) Vote(id int) error {
 	if u.Vote1 == nil {
 		u.Vote1 = &id
 		return u.Save()
+	} else if *u.Vote1 == id {
+		return errors.New("Duplicate vote")
 	}
 	if u.Vote2 == nil {
 		u.Vote2 = &id
 		return u.Save()
+	} else if *u.Vote2 == id {
+		return errors.New("Duplicate vote")
 	}
 	if u.Vote3 == nil {
 		u.Vote3 = &id
 		return u.Save()
+	} else if *u.Vote3 == id {
+		return errors.New("Duplicate vote")
 	}
 	if u.Vote4 == nil {
 		u.Vote4 = &id
 		return u.Save()
+	} else if *u.Vote4 == id {
+		return errors.New("Duplicate vote")
 	}
 	if u.Vote5 == nil {
 		u.Vote5 = &id
 		return u.Save()
+	} else if *u.Vote5 == id {
+		return errors.New("Duplicate vote")
 	}
 	return nil
 }

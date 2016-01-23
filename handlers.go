@@ -121,7 +121,28 @@ func handleUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleVote(w http.ResponseWriter, r *http.Request) {
+func handleUserUpdate(w http.ResponseWriter, r *http.Request) {
+	token := r.URL.Query().Get("token")
+	if len(token) == 0 {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+	} else {
+		user, err := authenticateUser(token)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+
+		js, err := json.Marshal(user)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+	}
+}
+
+func handleVoteCreate(w http.ResponseWriter, r *http.Request) {
 	token := r.URL.Query().Get("token")
 	vars := mux.Vars(r)
 	owner := vars["owner"]

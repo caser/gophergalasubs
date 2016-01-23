@@ -18,15 +18,10 @@ var Top5 = React.createClass({
       return n != undefined;
     })
 
-    console.log("votes1")
-    console.log(votes)
-
     votes = votes.map(function(n){
       var repo = state.repos.find(function(x){
         return x.id == n;
       })
-      console.log("repo")
-      console.log(repo)
       return (
       <li>
       {repo.name}
