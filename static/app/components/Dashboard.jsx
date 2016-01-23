@@ -4,8 +4,28 @@ var Actions = require('../actions.js')
 
 var Dashboard = React.createClass({
 
+  getInitialState: function() {
+    return {
+      sticky: false
+    }
+  },
+  
   vote: function(id) {
     Actions.submitVote(this.props.dispatch, id)
+  },
+  
+  componentDidMount: function() {
+    document.onscroll = this.stickyRelocate;
+  },
+  
+  componentWillUnmount: function() {
+    document.onscroll = null;
+  },
+  
+  stickyRelocate: function() {
+    var divTop = this.refs.top5.getBoundingClientRect().top;
+    var sticky = divTop <= 0;
+    this.setState({sticky: sticky});
   },
 
   render: function() {
@@ -47,10 +67,12 @@ var Dashboard = React.createClass({
             <p>Have a look at these wonderful projects and vote for your top five!</p>
             {repos}
           </div>
-          <div className="col-md-4 col-md-offset-1">
-            <h2>My Top 5</h2>
-            <p>You can drag to reorder your votes.</p>
-            <Top5 state={this.props.state} dispatch={this.props.dispatch} />
+          <div className="col-md-4 col-md-offset-1" ref="top5">
+            <div className={this.state.sticky ? "sticky" : ""}>
+              <h2>My Top 5</h2>
+              <p>You can drag to reorder your votes.</p>
+              <Top5 state={this.props.state} dispatch={this.props.dispatch} />
+            </div>
           </div>
         </div>
       </div>
