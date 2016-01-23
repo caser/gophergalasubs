@@ -37,9 +37,10 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/login", handleGitHubLogin)
 	r.HandleFunc("/github_oauth_cb", handleGitHubCallback)
-	r.HandleFunc("/repos", handleRepos)
-	r.HandleFunc("/user", handleUser)
-	r.HandleFunc("/vote/{owner}/{name}", handleVote)
+	r.HandleFunc("/repos", handleRepos).Methods("GET")
+	r.HandleFunc("/user", handleUser).Methods("GET")
+	r.HandleFunc("/user", handleUserUpdate).Methods("PATCH")
+	r.HandleFunc("/vote/{owner}/{name}", handleVoteCreate).Methods("POST")
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static")))
 	http.Handle("/", r)
 
