@@ -131,6 +131,24 @@ func handleUserUpdate(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 
+		dummyUser := User{}
+		decoder := json.NewDecoder(r.Body)
+		err = decoder.Decode(&dummyUser)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+
+		user.Vote1 = dummyUser.Vote1
+		user.Vote2 = dummyUser.Vote2
+		user.Vote3 = dummyUser.Vote3
+		user.Vote4 = dummyUser.Vote4
+		user.Vote5 = dummyUser.Vote5
+
+		err = user.Save()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+
 		js, err := json.Marshal(user)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

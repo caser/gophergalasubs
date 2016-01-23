@@ -2,8 +2,14 @@ var Actions = require('../actions.js');
 
 var Top5 = React.createClass({
 
+  remove: function(id){
+    console.log("click yo")
+    Actions.removeVote(this.props.dispatch, this.props.state.user, id)
+  },
+
   render: function(){
     var state = this.props.state;
+    var remove = this.remove;
 
     if(this.props.state.repos.length == 0) {
       return null
@@ -23,9 +29,13 @@ var Top5 = React.createClass({
         return x.id == n;
       })
       return (
-      <li>
-      {repo.name}
-        <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+      <li key={repo.id}>
+        {repo.name}
+        <span className="glyphicon glyphicon-remove" onClick={
+          function(){
+            remove(repo.id)
+          }
+        } aria-hidden="true"></span>
       </li>
       )
     });

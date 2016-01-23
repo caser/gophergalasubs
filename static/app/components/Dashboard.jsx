@@ -42,7 +42,7 @@ var Dashboard = React.createClass({
           </div>
           <div className="col-md-4">
             <h2>Your top 5</h2>
-            <Top5 state={this.props.state} />
+            <Top5 state={this.props.state} dispatch={this.props.dispatch}/>
           </div>
         </div>
       </div>
