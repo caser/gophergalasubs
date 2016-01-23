@@ -29,7 +29,7 @@ var Top5 = React.createClass({
         return x.id == n;
       })
       return (
-      <li>
+      <li key={repo.id}>
         {repo.name}
         <span className="glyphicon glyphicon-remove" onClick={
           function(){
