@@ -62,34 +62,13 @@ func handleRepos(w http.ResponseWriter, r *http.Request) {
 	if len(token) == 0 {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 	} else {
-		var allRepos []github.Repository
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: token},
-		)
-		tc := oauth2.NewClient(oauth2.NoContext, ts)
-
-		client := github.NewClient(tc)
-
-		// list all repositories for the authenticated user
-		opt := &github.RepositoryListByOrgOptions{
-			Type:        "public",
-			ListOptions: github.ListOptions{PerPage: 50, Page: 1},
+		repos, err := GetRepos()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 
-		// get all pages of results
-		for {
-			repos, resp, err := client.Repositories.ListByOrg("gophergala", opt)
-			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-			}
-			allRepos = append(allRepos, repos...)
-			if resp.NextPage == 0 {
-				break
-			}
-			opt.ListOptions.Page = resp.NextPage
-		}
-
-		js, err := json.Marshal(allRepos)
+		js, err := json.Marshal(repos)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
