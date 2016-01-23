@@ -1,6 +1,36 @@
+var Actions = require('../actions.js');
+
 var RepoItem = React.createClass({
 
+  hasVoted: function(){
+    var votes = [
+      this.props.user.vote1,
+      this.props.user.vote2,
+      this.props.user.vote3,
+      this.props.user.vote4,
+      this.props.user.vote5
+    ];
+    
+    return votes.indexOf(this.props.repo.id) >= 0;
+  },
+  
+  remove: function(){
+    Actions.removeVote(this.props.dispatch, this.props.user, this.props.repo.id)
+  },
+  
   render: function(){
+    var button;
+    
+    if (this.hasVoted()) {
+      button = <button className="btn btn-default" onClick={this.remove}>
+              Unvote <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+    } else {
+      button = <button className="btn btn-green" onClick={this.props.vote}>
+              Vote <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </button>
+    }
+    
     return (<li className="repo">
             <div className="details">
               <h3 className="name">
@@ -12,9 +42,7 @@ var RepoItem = React.createClass({
               </h3>
               <p className="description">{this.props.repo.description || "This submission has no description."}</p>
             </div>
-            <button className="btn btn-green" onClick={this.props.vote}>
-              Vote <span className="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-            </button>
+            {button}
             </li>)
   }
 

@@ -44,6 +44,21 @@ body {
 	color: #1da083
 }
 
+.btn-default {
+	border: 4px solid #ddd;
+	border-radius: 60px;
+	color: #444;
+	background: #ddd;
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none;
+}
+
+.btn-default:hover {
+	background: transparent;
+	color: #aaa;
+}
+
 .stargazers {
   font-size: 14px;
   color: #8C9196;

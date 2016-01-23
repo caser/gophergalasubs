@@ -10,10 +10,13 @@ var Dashboard = React.createClass({
 
   render: function() {
     var vote = this.vote;
+    var user = this.props.state.user;
+    var dispatch = this.props.dispatch;
     var repos;
+    
     if(this.props.state.repos.length != 0) {
       repos = this.props.state.repos.map(function(repo){
-        return <RepoItem key={repo.id} repo={repo} vote={function(){vote(repo.full_name)}} />
+        return <RepoItem key={repo.id} dispatch={dispatch} user={user} repo={repo} vote={function(){vote(repo.full_name)}} />
       })
       repos = (
         <ul id="submissions">
@@ -47,7 +50,7 @@ var Dashboard = React.createClass({
           <div className="col-md-4 col-md-offset-1">
             <h2>My Top 5</h2>
             <p>You can drag to reorder your votes.</p>
-            <Top5 state={this.props.state} dispatch={this.props.dispatch}/>
+            <Top5 state={this.props.state} dispatch={this.props.dispatch} />
           </div>
         </div>
       </div>

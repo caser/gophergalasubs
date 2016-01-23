@@ -3,7 +3,6 @@ var Actions = require('../actions.js');
 var Top5 = React.createClass({
 
   remove: function(id){
-    console.log("click yo")
     Actions.removeVote(this.props.dispatch, this.props.state.user, id)
   },
 
