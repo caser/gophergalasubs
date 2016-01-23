@@ -21,27 +21,33 @@ var Dashboard = React.createClass({
         </ul>
       )
     } else {
-      repos = <img src="build/images/puff.svg" />
+      repos = <div className="loading">
+        <img src="build/images/puff.svg" />
+      </div>
     }
 
     return (
-      <div>
-        <div id="passport" className="row">
-          <div id="passport" className="col-md-8">
-            <h1>Gopher Gala Voting</h1>
+      <div className="app">
+        <div className="row">
+          <div className="col-md-8">
+            <img className="logo" src="build/images/fancy-gopher.jpg" width="100px" />
+            <h1>Gopher Gala Votetastic</h1>
           </div>
           <div id="passport" className="col-md-4">
             {this.props.state.user.login}
-             <img src={this.props.state.user.avatar_url} width="50px"/>
+            <img src={this.props.state.user.avatar_url} width="50px" />
           </div>
         </div>
         <div className="row">
-          <div className="col-md-8">
+          <div className="col-md-9">
             <h2>Submissions</h2>
+            <p>Have a look at these wonderful projects and vote for your top five!</p>
             {repos}
           </div>
-          <div className="col-md-4">
-            <h2>Your top 5</h2>
+          <div className="col-md-3">
+            <h2>My Top 5</h2>
+            <p>You can drag to reorder your votes.</p>
+            
             <Top5 state={this.props.state} />
           </div>
         </div>

@@ -1,16 +1,97 @@
-body {
-  background: #eee;
+h1,h2,h3,h4,h5 {
+  font-family: 'Roboto Slab',Arial,sans-serif;
+  color: #696E74;
 }
 
+h1 {
+  text-transform: uppercase;
+  font-size: 35px;
+  font-weight: 600;
+  max-width: 400px;
+}
+
+html,
+body {
+  color: #696E74;
+}
+
+body {
+  padding-top: 20px;
+}
+
+.logo {
+  float: left;
+  margin-right: 40px;
+}
+
+.loading {
+  margin-top: 100px;
+  text-align: center;
+}
+
+.btn-green {
+	border: 4px solid #1da083;
+	border-radius: 60px;
+	color: #fff;
+	background: #1da083;
+	-webkit-transition: none;
+	-moz-transition: none;
+	transition: none;
+}
+
+.btn-green:hover {
+	background: transparent;
+	color: #1da083
+}
+
+.stargazers {
+  font-size: 14px;
+  color: #8C9196;
+  padding-left: 10px;
+  position: relative;
+  top: -2px;
+}
+
+.stargazers .glyphicon {
+  padding-right: 2px;
+}
+
+#passport {
+  text-align: right;
+  padding-top: 30px;
+}
+
+#passport span {
+  font-size: 16px;
+  padding-right: 10px;
+}
+
+#passport img {
+  border-radius: 4px;
+}
+
+#top5,
 #submissions {
   padding: 0;
+  padding-top: 10px;
 }
 
 #top5 li,
 #submissions li {
   margin-bottom: 10px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #efefef;
+  position: relative;
+}
+
+#submissions li .details {
+  width: 75%;
+}
+
+#submissions li button {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 #submissions li {
