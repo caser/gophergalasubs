@@ -3,10 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/google/go-github/github"
+	"github.com/gorilla/mux"
 	"golang.org/x/oauth2"
 )
 
@@ -121,12 +123,37 @@ func handleUser(w http.ResponseWriter, r *http.Request) {
 
 func handleVote(w http.ResponseWriter, r *http.Request) {
 	token := r.URL.Query().Get("token")
+	vars := mux.Vars(r)
+	owner := vars["owner"]
+	name := vars["name"]
+
 	if len(token) == 0 {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 	} else {
 		user, err := authenticateUser(token)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+
+		ts := oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: token},
+		)
+		tc := oauth2.NewClient(oauth2.NoContext, ts)
+
+		client := github.NewClient(tc)
+
+		log.Printf("OWNER: %s, NAME: %s", owner, name)
+
+		repo, _, err := client.Repositories.Get(owner, name)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = user.Vote(*repo.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
 		}
 
 		js, err := json.Marshal(user)
@@ -140,7 +167,7 @@ func handleVote(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func authenticateUser(token string) (*github.User, error) {
+func authenticateUser(token string) (*User, error) {
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: token},
 	)
@@ -153,9 +180,9 @@ func authenticateUser(token string) (*github.User, error) {
 		return nil, err
 	}
 
-	_, err = UpsertUserFromGithubUser(user)
+	u, err := UpsertUserFromGithubUser(user)
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return u, nil
 }

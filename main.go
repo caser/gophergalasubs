@@ -39,7 +39,7 @@ func main() {
 	r.HandleFunc("/github_oauth_cb", handleGitHubCallback)
 	r.HandleFunc("/repos", handleRepos)
 	r.HandleFunc("/user", handleUser)
-	r.HandleFunc("/vote/{vote_id}", handleVote)
+	r.HandleFunc("/vote/{owner}/{name}", handleVote)
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static")))
 	http.Handle("/", r)
 

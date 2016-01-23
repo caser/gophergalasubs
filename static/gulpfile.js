@@ -41,5 +41,13 @@ gulp.task('css', function () {
   });
 });
 
+// I added this so that you see how to run two watch tasks
+gulp.task('images', function () {
+  gulp.watch('images/*.*', function () {
+    return gulp.src('images/*.*')
+    .pipe(gulp.dest('build/images/'));
+  });
+});
+
 // Just running the two tasks
-gulp.task('default', ['browserify', 'css']);
+gulp.task('default', ['browserify', 'css', 'images']);

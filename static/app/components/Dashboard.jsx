@@ -10,7 +10,7 @@ var Dashboard = React.createClass({
   render: function() {
     var vote = this.vote;
     var repos = this.props.state.repos.map(function(repo){
-      return <RepoItem key={repo.id} repo={repo} vote={function(){vote(repo.id)}} />
+      return <RepoItem key={repo.id} repo={repo} vote={function(){vote(repo.full_name)}} />
     })
 
     return (
