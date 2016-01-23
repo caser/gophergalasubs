@@ -39,12 +39,12 @@ var Dashboard = React.createClass({
           </div>
         </div>
         <div className="row">
-          <div className="col-md-9">
+          <div className="col-md-7">
             <h2>Submissions</h2>
             <p>Have a look at these wonderful projects and vote for your top five!</p>
             {repos}
           </div>
-          <div className="col-md-3">
+          <div className="col-md-4 col-md-offset-1">
             <h2>My Top 5</h2>
             <p>You can drag to reorder your votes.</p>
             <Top5 state={this.props.state} dispatch={this.props.dispatch}/>

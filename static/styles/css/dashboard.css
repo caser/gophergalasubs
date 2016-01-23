@@ -82,18 +82,54 @@ body {
   padding-bottom: 10px;
   border-bottom: 1px solid #efefef;
   position: relative;
+  list-style: none;
 }
 
 #submissions li .details {
   width: 75%;
 }
 
-#submissions li button {
+#submissions li .btn {
   position: absolute;
   top: 8px;
   right: 0;
 }
 
-#submissions li {
-  list-style: none;
+#top5 {
+  padding-top: 30px;
+  padding-left: 30px;
+	counter-reset: top-counter;
+}
+
+#top5 li:before {
+  content: counter(top-counter);
+  counter-increment: top-counter;
+  position: absolute;
+  left: -30px;
+  font-size: 25px;
+  line-height: 37px;
+  color: #4E4E4E;
+  background: #efefef;
+  display: block;
+  height: 37px;
+  width: 30px;
+  text-align: center;
+}
+
+#top5 li h3 {
+  margin: 0;
+  padding-left: 10px;
+}
+
+#top5 li .btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+	border-radius: 60px;
+  font-size: 10px;
+  opacity: 0;
+}
+
+#top5 li:hover .btn {
+  opacity: 1;
 }

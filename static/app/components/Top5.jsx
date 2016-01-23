@@ -29,13 +29,15 @@ var Top5 = React.createClass({
         return x.id == n;
       })
       return (
-      <li key={repo.id}>
-        {repo.name}
-        <span className="glyphicon glyphicon-remove" onClick={
+      <li key={repo.id} className="top-repo">
+        <h3 className="name">{repo.name}</h3>
+        <a className="btn btn-danger" onClick={
           function(){
             remove(repo.id)
           }
-        } aria-hidden="true"></span>
+        }>
+          <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </a>
       </li>
       )
     });
