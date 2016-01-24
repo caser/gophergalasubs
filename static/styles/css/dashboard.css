@@ -136,6 +136,11 @@ body {
   text-align: center;
 }
 
+#top5 li {
+  user-select: none;
+  cursor: ns-resize;
+}
+
 #top5 li h3 {
   margin: 0;
   padding-left: 10px;

@@ -58,7 +58,13 @@ var Actions = {
     return this.updateUser(dispatch, data);
   },
 
-  updateUser: function(dispatch, data) {
+  updateUser: function(dispatch, data, cache) {
+    if(cache) {
+      dispatch({
+        type: "user_cached",
+        data: data 
+      });
+    }
     return fetch('/user?token='+Util.getCookie('token'), {
       method: 'PATCH',
       headers: {

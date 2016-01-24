@@ -14,6 +14,7 @@ var Actions = require('./actions.js');
 window.React = React; 
 
 var reducer = function(state, action){
+  console.log(['ACTION', action.type, action])
   switch (action.type) {
     case "repos_fetched":
       return Object.assign({}, state, {
@@ -22,6 +23,11 @@ var reducer = function(state, action){
     case "user_fetched":
       return Object.assign({}, state, {
         user: action.user
+      })
+    case "user_cached":
+      console.log(action)
+      return Object.assign({}, state, {
+        user: Object.assign({}, state.user, action.data)
       })
     default:
       return state
@@ -33,7 +39,6 @@ var enhancedStoreCreator = Redux.applyMiddleware(ReduxThunk)(Redux.createStore);
 var defaultState = {
   loggedIn: !!Util.getCookie('token'),
   repos: [],
-  pages: 0,
   user: {}
 }
 
