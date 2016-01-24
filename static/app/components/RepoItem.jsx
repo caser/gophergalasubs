@@ -13,6 +13,14 @@ var RepoItem = React.createClass({
     
     return votes.indexOf(this.props.repo.id) >= 0;
   },
+
+  canVote: function(){
+    return  this.props.user.vote1 &&
+      this.props.user.vote2 &&
+      this.props.user.vote3 &&
+      this.props.user.vote4 &&
+      this.props.user.vote5
+  },
   
   remove: function(){
     Actions.removeVote(this.props.dispatch, this.props.user, this.props.repo.id)
@@ -26,7 +34,7 @@ var RepoItem = React.createClass({
               Unvote <span className="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>
     } else {
-      button = <button className="btn btn-green" onClick={this.props.vote}>
+      button = <button disabled={this.canVote()} className="btn btn-green" onClick={this.props.vote}>
               Vote <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>
             </button>
     }
