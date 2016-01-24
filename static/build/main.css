@@ -158,3 +158,13 @@ body {
 #top5 li:hover .btn {
   opacity: 1;
 }
+
+#login-portal {
+  text-align:center;
+  margin-top: 100px;
+}
+
+#login-portal h1{
+  max-width: none;
+  text-align: center;
+}
