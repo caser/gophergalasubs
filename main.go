@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gorilla/mux"
 	_ "github.com/lib/pq"
@@ -27,12 +28,21 @@ var (
 	db               *sql.DB
 )
 
-func main() {
-	var err error
-	db, err = sql.Open("postgres", "postgres://postgres:postgres@postgres/development?sslmode=disable")
+func ensureDBTables() {
+	time.Sleep(5 * time.Second)
+	_, err := db.Exec("CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY NOT NULL, github_id INT, login TEXT, email TEXT, avatar_url TEXT, vote1 INT, vote2 INT, vote3 INT, vote4 INT, vote5 INT);")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
+}
+
+func main() {
+	var err error
+	db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	ensureDBTables()
 
 	r := mux.NewRouter()
 	r.HandleFunc("/login", handleGitHubLogin)
