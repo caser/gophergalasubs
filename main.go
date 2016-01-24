@@ -55,5 +55,5 @@ func main() {
 	http.Handle("/", r)
 
 	fmt.Println("Started running on http://127.0.0.1:8080")
-	fmt.Println(http.ListenAndServe(":8080", nil))
+	fmt.Println(http.ListenAndServe(os.Getenv("PORT"), nil))
 }
