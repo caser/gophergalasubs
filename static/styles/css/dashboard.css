@@ -19,6 +19,11 @@ body {
   padding-top: 20px;
 }
 
+.sticky {
+  position: fixed;
+  top: 0;
+}
+
 .logo {
   float: left;
   margin-right: 40px;

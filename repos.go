@@ -31,7 +31,7 @@ func RepoCacheIsInDate() bool {
 func GetRepos() ([]Repo, error) {
 	mut.RLock()
 	if len(allRepos) > 0 && RepoCacheIsInDate() {
-		log.Print("Usign cache")
+		log.Print("Using cache")
 		res := allRepos
 		mut.RUnlock()
 		return res, nil
