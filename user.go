@@ -11,7 +11,7 @@ type User struct {
 	Id        *int    `json:"id,omitempty"`
 	GithubId  *int    `json:"github_id,omitempty"`
 	Email     *string `json:"email,omitempty"`
-	AvatarUrl *string `json:"avatar_url,omitempty"`
+	AvatarURL *string `json:"avatar_url,omitempty"`
 	Login     *string `json:"login,omitempty"`
 	Vote1     *int    `json:"vote1,omitempty"`
 	Vote2     *int    `json:"vote2,omitempty"`
@@ -51,7 +51,7 @@ func GetUserByGithubId(github_id *int) (*User, error) {
 			GithubId:  github_id,
 			Login:     login,
 			Email:     email,
-			AvatarUrl: avatar_url,
+			AvatarURL: avatar_url,
 			Vote1:     vote1,
 			Vote2:     vote2,
 			Vote3:     vote3,
@@ -70,17 +70,18 @@ func CreateUserFromGithubUser(u *github.User) (*User, error) {
 		u.Login,
 		u.ID,
 		u.AvatarURL,
-	).Scan(lastInsertId)
+	).Scan(&lastInsertId)
 	if err != nil {
 		log.Println("HERE 5")
 		log.Printf("%#v", err)
 		return nil, err
 	}
 	return &User{
-		Id:       lastInsertId,
-		GithubId: u.ID,
-		Login:    u.Login,
-		Email:    u.Email,
+		Id:        lastInsertId,
+		GithubId:  u.ID,
+		AvatarURL: u.AvatarURL,
+		Login:     u.Login,
+		Email:     u.Email,
 	}, nil
 }
 
