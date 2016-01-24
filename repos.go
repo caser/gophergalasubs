@@ -55,7 +55,7 @@ func GetRepos() ([]Repo, error) {
 
 	// get all pages of results
 	for {
-		repos, resp, err := client.Repositories.ListByOrg("gophergala", opt)
+		repos, resp, err := client.Repositories.ListByOrg("gophergala2016", opt)
 		if err != nil {
 			allRepos = make([]Repo, 0)
 			return allRepos, err
