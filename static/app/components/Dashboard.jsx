@@ -57,7 +57,8 @@ var Dashboard = React.createClass({
             <h1>Gopher Gala Votetastic</h1>
           </div>
           <div id="passport" className="col-md-4">
-            {this.props.state.user.login}
+           {this.props.state.user.login} | 
+             <span><a href="/logout">Logout</a></span>
             <img src={this.props.state.user.avatar_url} width="50px" />
           </div>
         </div>

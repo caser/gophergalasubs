@@ -20,7 +20,7 @@ var (
 	oauthConf = &oauth2.Config{
 		ClientID:     os.Getenv("GITHUB_CLIENT_ID"),
 		ClientSecret: os.Getenv("GITHUB_CLIENT_SECRET"),
-		Scopes:       []string{"user:email", "public_repo"},
+		Scopes:       []string{"user:email"},
 		Endpoint:     githuboauth.Endpoint,
 	}
 	// TODO: random string for oauth2 API calls to protect against CSRF
@@ -47,6 +47,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/login", handleGitHubLogin)
 	r.HandleFunc("/github_oauth_cb", handleGitHubCallback)
+	r.HandleFunc("/logout", handleLogout)
 	r.HandleFunc("/repos", handleRepos).Methods("GET")
 	r.HandleFunc("/user", handleUser).Methods("GET")
 	r.HandleFunc("/user", handleUserUpdate).Methods("PATCH")

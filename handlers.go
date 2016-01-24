@@ -57,6 +57,12 @@ func handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 }
 
+func handleLogout(w http.ResponseWriter, r *http.Request) {
+	cookie := http.Cookie{Name: "token", Value: "", Expires: time.Now().Add(-time.Minute)}
+	http.SetCookie(w, &cookie)
+	http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+}
+
 func handleRepos(w http.ResponseWriter, r *http.Request) {
 	token := r.URL.Query().Get("token")
 	if len(token) == 0 {
