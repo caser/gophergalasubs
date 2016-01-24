@@ -5,6 +5,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactRedux = require('react-redux');
 var Redux = require('redux');
+var _ = require('underscore');
 
 var ReduxThunk = require('redux-thunk');
 
@@ -18,7 +19,7 @@ var reducer = function(state, action){
   switch (action.type) {
     case "repos_fetched":
       return Object.assign({}, state, {
-        repos: action.repos
+        repos: _.shuffle(action.repos)
       })
     case "user_fetched":
       return Object.assign({}, state, {
