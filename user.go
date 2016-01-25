@@ -123,7 +123,7 @@ func (u *User) Vote(id int) error {
 }
 
 func (u *User) Save() error {
-	_, err := db.Query(
+	rows, err := db.Query(
 		"UPDATE users SET (email, login, github_id, vote1, vote2, vote3, vote4, vote5) = ($1, $2, $3, $4, $5, $6, $7, $8) WHERE id = $9",
 		u.Email,
 		u.Login,
@@ -135,5 +135,6 @@ func (u *User) Save() error {
 		u.Vote5,
 		u.Id,
 	)
+	rows.Close()
 	return err
 }
