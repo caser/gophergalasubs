@@ -60,7 +60,11 @@ func GetRepos() ([]Repo, error) {
 			allRepos = make([]Repo, 0)
 			return allRepos, err
 		}
-		githubRepos = append(githubRepos, repos...)
+		for _, repo := range repos {
+			if *repo.Size > 0 {
+				githubRepos = append(githubRepos, repo)
+			}
+		}
 		if resp.NextPage == 0 {
 			break
 		}
